@@ -1,6 +1,8 @@
 # Style system and prompt recipes
 
-## Visual grammar
+## Visual families
+
+### Mechanism Board
 
 The target feels like a thoughtful person explaining a system on a presentation board:
 
@@ -21,6 +23,21 @@ Use semantic color consistently:
 - quiet gray: inactive, unavailable, or unselected states.
 
 Avoid photorealism, 3D, gradients, glass, brand logos, trademarked interfaces, decorative backgrounds, tiny screenshots, fabricated metrics, and watermarks.
+
+Use this family for project pages, READMEs, deployment paths, and stepwise operational explanations.
+
+### Editorial Field Map
+
+Use this second family for essays and conceptual writing so several diagrams do not become a wall of repeated cards:
+
+- open white canvas without enclosing every stage;
+- broad, asymmetric color fields and large spatial relationships;
+- circles, tracks, dividers, and connective rules instead of checklist panels;
+- one or two dominant ideas with few labels;
+- typography sits beside forms rather than inside interface-like containers;
+- the composition may be asymmetric, but the causal relationship remains explicit.
+
+Use it for Before/After comparisons, dual systems, conceptual maps, and long-form writing. Do not use it for procedures where readers must verify every step.
 
 ## Generation prompt
 
@@ -64,6 +81,12 @@ Constraints: use the translations verbatim; do not add, remove, move, or redraw 
 - `pipeline`: a one-way sequence with a meaningful order and a terminal output.
 - `filter`: many possible inputs are reduced to a smaller relevant set before downstream use.
 - `loop`: the last state or human response changes the context for the next cycle; the changed next cycle belongs in the center.
+- `before-after`: two different causal structures are compared across a central divider; use it only when the changed structure is the argument.
+- `dual-loop`: two cycles run on different time horizons and exchange signals; use it only when both cycles must keep moving.
+
+## Page-level rhythm
+
+Do not place more than two Mechanism Board diagrams in one continuous reading surface. Alternate Board diagrams with Editorial Field Maps, real screenshots, photographs, or text-only sections. Variety must follow the argument, not decoration.
 
 ## Existing site examples
 

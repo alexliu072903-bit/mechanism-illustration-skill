@@ -48,7 +48,7 @@ evidence_boundary: what this image must not imply
 
 Use one dominant grammar. A secondary loop is allowed; competing main paths are not.
 
-The bundled deterministic renderer implements `pipeline`, `filter`, and `loop`. Before / after remains conceptual until it has a purpose-built layout; do not fake it by relabeling a Pipeline.
+The bundled deterministic renderer implements `pipeline`, `filter`, `loop`, `before-after`, and the writing-specific `dual-loop`. Do not fake one grammar by relabeling another.
 
 ## Generate
 
@@ -60,6 +60,11 @@ Choose the text strategy before generating:
 
 - **Direct bitmap text:** acceptable for one language and no more than seven short labels.
 - **Deterministic text layer:** required for repeated templates, dense annotations, several languages, or text that must be exact. Generate the pictogram and connector layer without text, then add labels in SVG, HTML, Figma, or another deterministic layout surface.
+
+Choose the visual family as well:
+
+- **Mechanism Board:** framed stages and compact checks for operational, instructional, and repository-facing diagrams.
+- **Editorial Field Map:** open composition, broad color fields, larger relationships, and fewer labels for essays and conceptual writing. Do not repeat the Board treatment through a long article.
 
 ## Localize
 

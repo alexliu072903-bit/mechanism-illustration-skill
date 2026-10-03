@@ -10,6 +10,7 @@ if (!specPath) {
 }
 
 const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+const layout = spec.layout ?? 'pipeline';
 const width = 1600;
 const height = 900;
 const stageWidth = 278;
@@ -30,7 +31,11 @@ const palette = {
   coreSoft: spec.colors?.coreSoft ?? '#e5f5f7',
 };
 
-if (!Array.isArray(spec.stages) || spec.stages.length < 3 || spec.stages.length > 5) {
+if (layout === 'dual-loop') {
+  if (!Array.isArray(spec.loops) || spec.loops.length !== 2 || spec.loops.some((loop) => !Array.isArray(loop.stages) || loop.stages.length !== 3)) {
+    throw new Error('dual-loop layout requires two loops with three stages each');
+  }
+} else if (!Array.isArray(spec.stages) || spec.stages.length < 3 || spec.stages.length > 5) {
   throw new Error('templates require 3–5 stages');
 }
 
@@ -209,16 +214,83 @@ function renderLoopText(lang) {
   return `<g id="text-layer" data-language="${lang}" data-layout="loop">${stages}${centerLabel}</g>`;
 }
 
+const beforeAfterCenters = [210, 590, 1010, 1390];
+
+function renderBeforeAfterArt() {
+  if (spec.stages.length !== 4) throw new Error('before-after layout requires exactly 4 stages');
+  const stages = spec.stages.map((stage, index) => {
+    const center = beforeAfterCenters[index];
+    const fill = index < 2 ? palette.quiet : palette.coreSoft;
+    const bullets = (stage.items ?? []).slice(0, 2).map((_, itemIndex) => `<circle cx="${center - 106}" cy="${545 + itemIndex * 38}" r="7" fill="${index < 2 ? palette.inactive : palette.verified}"/>`).join('');
+    return `<g id="before-after-stage-${esc(stage.id)}"><circle cx="${center}" cy="335" r="116" fill="${fill}"/>${icon(stage.icon, center, 335)}${bullets}</g>`;
+  }).join('');
+  const leftArrow = arrowLine(335, 335, 465, 335, palette.inactive);
+  const rightArrow = arrowLine(1135, 335, 1265, 335, palette.verified);
+  return `<g id="art-layer" data-layout="before-after" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/><path d="M800 80v700" stroke="${palette.line}" stroke-width="2"/><path d="M50 180h690" stroke="${palette.inactive}" stroke-width="3"/><path d="M860 180h690" stroke="${palette.verified}" stroke-width="3"/>${stages}${leftArrow}${rightArrow}</g>`;
+}
+
+function renderBeforeAfterText(lang) {
+  const sideBefore = spec.sides?.before ?? {};
+  const sideAfter = spec.sides?.after ?? {};
+  const stages = spec.stages.map((stage, index) => {
+    const center = beforeAfterCenters[index];
+    const title = stage.title?.[lang] ?? stage.title?.en ?? '';
+    const items = (stage.items ?? []).slice(0, 2).map((item, itemIndex) => textBlock(center - 88, 551 + itemIndex * 38, item[lang] ?? item.en, { size: 17, max: lang === 'zh' ? 11 : 23 })).join('');
+    return `<g id="before-after-stage-${esc(stage.id)}-text">${textBlock(center, 485, title, { size: 24, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 16 })}${items}</g>`;
+  }).join('');
+  const headings = `${textBlock(50, 105, sideBefore.label?.[lang] ?? sideBefore.label?.en ?? '', { size: 34, weight: 760, color: palette.ink, max: 24 })}${textBlock(50, 138, sideBefore.note?.[lang] ?? sideBefore.note?.en ?? '', { size: 16, color: palette.inactive, max: lang === 'zh' ? 28 : 60 })}${textBlock(860, 105, sideAfter.label?.[lang] ?? sideAfter.label?.en ?? '', { size: 34, weight: 760, color: palette.ink, max: 24 })}${textBlock(860, 138, sideAfter.note?.[lang] ?? sideAfter.note?.en ?? '', { size: 16, color: palette.verified, max: lang === 'zh' ? 28 : 60 })}`;
+  const statement = textBlock(800, 835, spec.centerLabel?.[lang] ?? spec.centerLabel?.en ?? '', { size: 24, weight: 700, color: palette.failure, anchor: 'middle', max: lang === 'zh' ? 24 : 55 });
+  return `<g id="text-layer" data-language="${lang}" data-layout="before-after" data-style="editorial">${headings}${stages}${statement}</g>`;
+}
+
+const dualLoopNodes = [
+  [[400, 185], [600, 430], [250, 620]],
+  [[1200, 185], [1400, 430], [1050, 620]],
+];
+
+function renderDualLoopArt() {
+  const defs = `<defs>${spec.loops.map((loop, index) => `<marker id="dual-arrow-${index}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="${loop.color}"/></marker>`).join('')}</defs>`;
+  const loops = spec.loops.map((loop, index) => {
+    const nodes = dualLoopNodes[index];
+    const [a, b, c] = nodes;
+    const paths = index === 0
+      ? `<path d="M${a[0] + 70} ${a[1] + 15}Q${b[0]} ${a[1] + 40} ${b[0]} ${b[1] - 70}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/><path d="M${b[0] - 10} ${b[1] + 72}Q${b[0] - 20} ${c[1]} ${c[0] + 75} ${c[1]}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/><path d="M${c[0] - 70} ${c[1] - 20}Q${a[0] - 165} ${a[1] + 70} ${a[0] - 65} ${a[1] + 20}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/>`
+      : `<path d="M${a[0] + 70} ${a[1] + 15}Q${b[0]} ${a[1] + 40} ${b[0]} ${b[1] - 70}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/><path d="M${b[0] - 10} ${b[1] + 72}Q${b[0] - 20} ${c[1]} ${c[0] + 75} ${c[1]}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/><path d="M${c[0] - 70} ${c[1] - 20}Q${a[0] - 165} ${a[1] + 70} ${a[0] - 65} ${a[1] + 20}" fill="none" stroke="${loop.color}" stroke-width="12" marker-end="url(#dual-arrow-${index})"/>`;
+    const nodeArt = loop.stages.map((stage, stageIndex) => {
+      const [x, y] = nodes[stageIndex];
+      return `<g id="dual-loop-${esc(loop.id)}-${esc(stage.id)}"><circle cx="${x}" cy="${y}" r="76" fill="${loop.soft}"/>${icon(stage.icon, x, y)}</g>`;
+    }).join('');
+    return `<g id="dual-loop-${esc(loop.id)}">${paths}${nodeArt}</g>`;
+  }).join('');
+  const bridge = `${arrowLine(705, 430, 895, 430, palette.verified)}${arrowLine(895, 485, 705, 485, palette.failure)}<path d="M690 760h220" stroke="${palette.line}" stroke-width="2"/>`;
+  return `<g id="art-layer" data-layout="dual-loop" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/>${defs}<circle cx="800" cy="455" r="96" fill="${palette.quiet}"/>${loops}${bridge}</g>`;
+}
+
+function renderDualLoopText(lang) {
+  const loops = spec.loops.map((loop, index) => {
+    const nodes = dualLoopNodes[index];
+    const nodeText = loop.stages.map((stage, stageIndex) => {
+      const [x, y] = nodes[stageIndex];
+      return textBlock(x, y + 108, stage.title?.[lang] ?? stage.title?.en ?? '', { size: 21, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 14 });
+    }).join('');
+    const center = index === 0 ? [420, 430] : [1180, 430];
+    return `<g id="dual-loop-${esc(loop.id)}-text">${textBlock(center[0], center[1], loop.label?.[lang] ?? loop.label?.en ?? '', { size: 36, weight: 760, color: loop.color, anchor: 'middle', max: 16 })}${nodeText}</g>`;
+  }).join('');
+  const bridgeLabel = textBlock(800, 448, spec.bridge?.label?.[lang] ?? spec.bridge?.label?.en ?? '', { size: 23, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 18 });
+  const roles = (spec.bridge?.roles ?? []).map((role) => role[lang] ?? role.en).join('  →  ');
+  const rolesText = textBlock(800, 800, roles, { size: 22, weight: 650, anchor: 'middle', max: 60 });
+  return `<g id="text-layer" data-language="${lang}" data-layout="dual-loop" data-style="editorial">${loops}${bridgeLabel}${rolesText}</g>`;
+}
+
 function svg(body) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img">${body}</svg>\n`;
 }
 
 fs.mkdirSync(outputDir, { recursive: true });
-const layout = spec.layout ?? 'pipeline';
-const art = layout === 'filter' ? renderFilterArt() : layout === 'loop' ? renderLoopArt() : renderPipelineArt();
+const art = layout === 'filter' ? renderFilterArt() : layout === 'loop' ? renderLoopArt() : layout === 'before-after' ? renderBeforeAfterArt() : layout === 'dual-loop' ? renderDualLoopArt() : renderPipelineArt();
 fs.writeFileSync(path.join(outputDir, `${spec.slug}.art.svg`), svg(art));
 for (const lang of ['zh', 'en']) {
-  const text = layout === 'filter' ? renderFilterText(lang) : layout === 'loop' ? renderLoopText(lang) : renderPipelineText(lang);
+  const text = layout === 'filter' ? renderFilterText(lang) : layout === 'loop' ? renderLoopText(lang) : layout === 'before-after' ? renderBeforeAfterText(lang) : layout === 'dual-loop' ? renderDualLoopText(lang) : renderPipelineText(lang);
   fs.writeFileSync(path.join(outputDir, `${spec.slug}.${lang}.svg`), svg(`${art}${text}`));
 }
 console.log(JSON.stringify({ ok: true, slug: spec.slug, outputs: ['art', 'zh', 'en'].map((suffix) => path.join(outputDir, `${spec.slug}.${suffix}.svg`)) }, null, 2));

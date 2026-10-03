@@ -11,7 +11,8 @@
 - 画图前先提取一份小型机制契约；
 - 将可复用图形层与中英文文字层分开；
 - 从 JSON 确定性生成 `art.svg`、`zh.svg` 与 `en.svg`；
-- 提供不同的 Pipeline、Filter 与 Loop 空间结构，不再把所有机制都硬塞进一排步骤；
+- 提供 Pipeline、Filter、Loop、Before/After 与 Dual Loop 空间结构，不再把所有机制都硬塞进一排步骤；
+- 为文章与概念说明提供第二套 Editorial Field Map 视觉语言；
 - 保持“说明图”和“真实产品证据”的边界；
 - 需要新 pictogram 时，可以先用 ImageGen 探索，再把最终图形固化到模板。
 
@@ -25,7 +26,7 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 渲染器只依赖 Node.js 内置模块。复制一份模板，替换已经确认的流程与双语标签，即可同时生成中文和英文版本。
 
-有严格先后顺序的机制使用 `layout: "pipeline"`；从很多输入中筛出少量相关内容时使用 `layout: "filter"`；输出或用户反馈会改变下一轮时使用 `layout: "loop"`。
+有严格先后顺序的机制使用 `pipeline`；从很多输入中筛出少量相关内容时使用 `filter`；反馈改变下一轮时使用 `loop`；结构差异本身就是论点时使用 `before-after`；两个不同时间尺度的循环需要同时运转时使用 `dual-loop`。
 
 ## 图形语法
 
@@ -36,6 +37,12 @@ Pipeline 表达严格顺序；Filter 直接画出“很多可能输入如何减�
 ![基于 Agent feedback cycle 的 Loop 布局示例](examples/agent-feedback-loop.zh.svg)
 
 原来的 Telegram 部署示例仍可查看[中文版](examples/telegram-miniapp.zh.svg)与[英文版](examples/telegram-miniapp.en.svg)。
+
+### Editorial Field Map
+
+![来自 AI 应用文章的 Before/After 示例](examples/ai-applications-before-after.zh.svg)
+
+![来自《两个飞轮》的 Dual Loop 示例](examples/two-flywheels.zh.svg)
 
 ## 作为 Codex Skill 使用
 

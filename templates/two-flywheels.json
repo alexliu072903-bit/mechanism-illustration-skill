@@ -1,0 +1,38 @@
+{
+  "slug": "two-flywheels",
+  "layout": "dual-loop",
+  "style": "editorial",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "loops": [
+    {
+      "id": "present",
+      "label": { "zh": "当下飞轮", "en": "PRESENT" },
+      "color": "#579260",
+      "soft": "#e4f1e5",
+      "stages": [
+        { "id": "build", "icon": "code", "title": { "zh": "建设", "en": "BUILD" } },
+        { "id": "ship", "icon": "export", "title": { "zh": "发布", "en": "SHIP" } },
+        { "id": "support", "icon": "context", "title": { "zh": "支持", "en": "SUPPORT" } }
+      ]
+    },
+    {
+      "id": "future",
+      "label": { "zh": "未来飞轮", "en": "FUTURE" },
+      "color": "#73c6d4",
+      "soft": "#e8f7f8",
+      "stages": [
+        { "id": "observe", "icon": "filter", "title": { "zh": "观察", "en": "OBSERVE" } },
+        { "id": "systematize", "icon": "services", "title": { "zh": "系统化", "en": "SYSTEMATIZE" } },
+        { "id": "explore", "icon": "agent", "title": { "zh": "探索", "en": "EXPLORE" } }
+      ]
+    }
+  ],
+  "bridge": {
+    "label": { "zh": "持续往返", "en": "CONTINUOUS EXCHANGE" },
+    "roles": [
+      { "zh": "Scout", "en": "SCOUT" },
+      { "zh": "Systematizer", "en": "SYSTEMATIZER" },
+      { "zh": "Bridge", "en": "BRIDGE" }
+    ]
+  }
+}

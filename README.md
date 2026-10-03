@@ -11,7 +11,8 @@ A Codex Skill and dependency-free SVG renderer for turning documented workflows 
 - extracts a small mechanism contract before drawing;
 - separates the reusable art layer from Chinese and English text layers;
 - renders deterministic `art.svg`, `zh.svg`, and `en.svg` files from JSON;
-- includes distinct Pipeline, Filter, and Loop layout grammars instead of forcing every mechanism into one row of steps;
+- includes Pipeline, Filter, Loop, Before/After, and Dual Loop grammars instead of forcing every mechanism into one row of steps;
+- includes a second Editorial Field Map visual family for essays and conceptual writing;
 - keeps generated explainers separate from product evidence;
 - supports ImageGen-based pictogram exploration when a custom art layer is needed.
 
@@ -25,7 +26,7 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 The renderer uses only Node.js built-ins. Copy a template, replace the documented stages and labels, then render both languages.
 
-Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs must become a smaller relevant set. Use `layout: "loop"` when an output or user response changes the next cycle.
+Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs become a smaller relevant set. Use `layout: "loop"` when a response changes the next cycle. Use `before-after` when the structural difference is the argument, and `dual-loop` when two cycles operate on different time horizons.
 
 ## Layout grammars
 
@@ -36,6 +37,12 @@ Pipeline keeps a strict order. Filter makes the reduction from many possible inp
 ![Loop layout example based on an Agent feedback cycle](examples/agent-feedback-loop.en.svg)
 
 The original Telegram deployment example remains available in [English](examples/telegram-miniapp.en.svg) and [Chinese](examples/telegram-miniapp.zh.svg).
+
+### Editorial Field Map
+
+![Before/After example from the AI applications essay](examples/ai-applications-before-after.en.svg)
+
+![Dual Loop example from Two Flywheels](examples/two-flywheels.en.svg)
 
 ## Use as a Codex Skill
 

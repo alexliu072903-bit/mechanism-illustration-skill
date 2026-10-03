@@ -1,0 +1,55 @@
+{
+  "slug": "ai-applications-before-after",
+  "layout": "before-after",
+  "style": "editorial",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "sides": {
+    "before": {
+      "label": { "zh": "AI+：替换旧工具", "en": "AI+: REPLACE THE TOOL" },
+      "note": { "zh": "模型能力进入旧产品，但人的行为、流程和关系基本不变。", "en": "Model capability enters the old product while behavior, workflow, and relationships stay largely unchanged." }
+    },
+    "after": {
+      "label": { "zh": "AI NATIVE：重构产品", "en": "AI NATIVE: REDESIGN THE PRODUCT" },
+      "note": { "zh": "把持续存在的智能视为基础设施，重新设计行为、工作流与生活方式。", "en": "Treat continuous intelligence as infrastructure and redesign behavior, workflows, and ways of living." }
+    }
+  },
+  "centerLabel": { "zh": "基础设施让产品成为可能，但不会自动发明产品", "en": "INFRASTRUCTURE MAKES PRODUCTS POSSIBLE; IT DOES NOT INVENT THEM" },
+  "stages": [
+    {
+      "id": "old-workflow",
+      "icon": "services",
+      "title": { "zh": "旧工作流", "en": "OLD WORKFLOW" },
+      "items": [
+        { "zh": "既有角色与步骤", "en": "Existing roles and steps" },
+        { "zh": "既有组织方式", "en": "Existing organization" }
+      ]
+    },
+    {
+      "id": "ai-layer",
+      "icon": "agent",
+      "title": { "zh": "增加 AI 能力", "en": "ADD AI" },
+      "items": [
+        { "zh": "生成或执行单次任务", "en": "Generate or execute a task" },
+        { "zh": "功能容易被模型吸收", "en": "Model updates absorb features" }
+      ]
+    },
+    {
+      "id": "human-life",
+      "icon": "document",
+      "title": { "zh": "真实生活与工作", "en": "REAL LIFE & WORK" },
+      "items": [
+        { "zh": "行为、关系与判断", "en": "Behavior, relationships, judgment" },
+        { "zh": "尚未被表达的需求", "en": "Needs not yet articulated" }
+      ]
+    },
+    {
+      "id": "native-product",
+      "icon": "context",
+      "title": { "zh": "重构产品系统", "en": "REDESIGN THE SYSTEM" },
+      "items": [
+        { "zh": "智能持续存在", "en": "Intelligence is always available" },
+        { "zh": "重新组织工作与生活", "en": "Reorganize work and life" }
+      ]
+    }
+  ]
+}

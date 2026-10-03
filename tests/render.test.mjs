@@ -30,6 +30,15 @@ test('every template has bilingual stage titles', () => {
   for (const name of templates) {
     const spec = JSON.parse(fs.readFileSync(path.join(root, 'templates', name), 'utf8'));
     assert.ok(spec.slug, `${name}: missing slug`);
+    if (spec.layout === 'dual-loop') {
+      assert.equal(spec.loops.length, 2, `${name}: requires two loops`);
+      for (const loop of spec.loops) {
+        assert.ok(loop.label.zh && loop.label.en, `${name}/${loop.id}: missing bilingual loop label`);
+        assert.equal(loop.stages.length, 3, `${name}/${loop.id}: requires three stages`);
+        for (const stage of loop.stages) assert.ok(stage.title.zh && stage.title.en, `${name}/${loop.id}/${stage.id}: missing bilingual title`);
+      }
+      continue;
+    }
     assert.ok(spec.stages.length >= 3 && spec.stages.length <= 5, `${name}: requires 3–5 stages`);
     for (const stage of spec.stages) {
       assert.ok(stage.title.zh && stage.title.en, `${name}/${stage.id}: missing bilingual title`);
@@ -63,4 +72,32 @@ test('renders a closed Agent feedback loop', () => {
   assert.match(art, /data-layout="loop"/);
   assert.match(en, /THE NEXT CYCLE/);
   assert.match(en, /STATE UPDATE/);
+});
+
+test('renders a real before-and-after comparison', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-before-after-'));
+  const template = path.join(root, 'templates/ai-applications-before-after.json');
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+
+  const art = fs.readFileSync(path.join(output, 'ai-applications-before-after.art.svg'), 'utf8');
+  const zh = fs.readFileSync(path.join(output, 'ai-applications-before-after.zh.svg'), 'utf8');
+  assert.match(art, /data-layout="before-after"/);
+  assert.match(art, /data-style="editorial"/);
+  assert.match(zh, /AI NATIVE/);
+  assert.match(zh, /基础设施让产品成为可能/);
+});
+
+test('renders two connected editorial flywheels', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-dual-loop-'));
+  const template = path.join(root, 'templates/two-flywheels.json');
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+
+  const art = fs.readFileSync(path.join(output, 'two-flywheels.art.svg'), 'utf8');
+  const en = fs.readFileSync(path.join(output, 'two-flywheels.en.svg'), 'utf8');
+  assert.match(art, /data-layout="dual-loop"/);
+  assert.match(art, /data-style="editorial"/);
+  assert.match(en, /PRESENT/);
+  assert.match(en, /CONTINUOUS[\s\S]*EXCHANGE/);
 });
