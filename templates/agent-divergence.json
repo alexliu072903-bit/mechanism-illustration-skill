@@ -1,0 +1,50 @@
+{
+  "slug": "agent-divergence",
+  "layout": "branch",
+  "style": "editorial",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "centerLabel": {
+    "zh": "一条扩散路径，三种优化目标",
+    "en": "ONE ADOPTION PATH, THREE OPTIMIZATION TARGETS"
+  },
+  "stages": [
+    {
+      "id": "professional",
+      "icon": "code",
+      "title": { "zh": "专业开发者", "en": "PROFESSIONALS" },
+      "note": { "zh": "Coding Agent", "en": "CODING AGENTS" }
+    },
+    {
+      "id": "prosumer",
+      "icon": "services",
+      "title": { "zh": "办公人群", "en": "PROSUMERS" },
+      "note": { "zh": "办公 Agent", "en": "WORK AGENTS" }
+    },
+    {
+      "id": "public",
+      "icon": "agent",
+      "title": { "zh": "大众用户", "en": "PUBLIC" },
+      "note": { "zh": "Personal Agent", "en": "PERSONAL AGENTS" }
+    }
+  ],
+  "branches": [
+    {
+      "id": "work",
+      "icon": "services",
+      "title": { "zh": "工作", "en": "WORK" },
+      "note": { "zh": "生产与协作", "en": "PRODUCTION & COORDINATION" }
+    },
+    {
+      "id": "leisure",
+      "icon": "document",
+      "title": { "zh": "自我发展", "en": "LEISURE" },
+      "note": { "zh": "学习、反思与能力", "en": "LEARNING, REFLECTION, GROWTH" }
+    },
+    {
+      "id": "entertainment",
+      "icon": "bot",
+      "title": { "zh": "娱乐", "en": "ENTERTAINMENT" },
+      "note": { "zh": "情绪价值与参与", "en": "EMOTIONAL VALUE & ENGAGEMENT" }
+    }
+  ]
+}

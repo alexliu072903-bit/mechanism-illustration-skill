@@ -7,7 +7,7 @@
 - 画图前先提取一份小型机制契约；
 - 将可复用图形层与中英文文字层分开；
 - 从 JSON 确定性生成 `art.svg`、`zh.svg` 与 `en.svg`；
-- 提供 Pipeline、Filter、Loop、Before/After 与 Dual Loop 空间结构，不再把所有机制都硬塞进一排步骤；
+- 提供 Pipeline、Filter、Loop、Branch、Before/After 与 Dual Loop 空间结构，不再把所有机制都硬塞进一排步骤；
 - 为文章与概念说明提供第二套 Editorial Field Map 视觉语言；
 - 保持“说明图”和“真实产品证据”的边界；
 - 需要新 pictogram 时，可以先用 ImageGen 探索，再把最终图形固化到模板。
@@ -22,7 +22,7 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 渲染器只依赖 Node.js 内置模块。复制一份模板，替换已经确认的流程与双语标签，即可同时生成中文和英文版本。
 
-有严格先后顺序的机制使用 `pipeline`；从很多输入中筛出少量相关内容时使用 `filter`；反馈改变下一轮时使用 `loop`；结构差异本身就是论点时使用 `before-after`；两个不同时间尺度的循环需要同时运转时使用 `dual-loop`。
+有严格先后顺序的机制使用 `pipeline`；从很多输入中筛出少量相关内容时使用 `filter`；反馈改变下一轮时使用 `loop`；同一条路径抵达真正的分化点时使用 `branch`；结构差异本身就是论点时使用 `before-after`；两个不同时间尺度的循环需要同时运转时使用 `dual-loop`。
 
 ## 布局目录
 
@@ -49,6 +49,14 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 ![Loop 示例：Agent feedback cycle](examples/agent-feedback-loop.zh.svg)
 
 [模板 JSON](templates/agent-feedback-loop.json) · [中文 SVG](examples/agent-feedback-loop.zh.svg) · [英文 SVG](examples/agent-feedback-loop.en.svg) · [图形层](examples/agent-feedback-loop.art.svg)
+
+### Branch：一条路径分化成不同目标
+
+用于共同的采用路径或输入到达真正的分化点，并形成优化目标不同的多个结果。
+
+![Branch 示例：Agent 市场分化](examples/agent-divergence.zh.svg)
+
+[模板 JSON](templates/agent-divergence.json) · [中文 SVG](examples/agent-divergence.zh.svg) · [英文 SVG](examples/agent-divergence.en.svg) · [图形层](examples/agent-divergence.art.svg)
 
 ### Before/After：比较两套因果结构
 

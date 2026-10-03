@@ -7,7 +7,7 @@ A Codex Skill and dependency-free SVG renderer for turning documented workflows 
 - extracts a small mechanism contract before drawing;
 - separates the reusable art layer from Chinese and English text layers;
 - renders deterministic `art.svg`, `zh.svg`, and `en.svg` files from JSON;
-- includes Pipeline, Filter, Loop, Before/After, and Dual Loop grammars instead of forcing every mechanism into one row of steps;
+- includes Pipeline, Filter, Loop, Branch, Before/After, and Dual Loop grammars instead of forcing every mechanism into one row of steps;
 - includes a second Editorial Field Map visual family for essays and conceptual writing;
 - keeps generated explainers separate from product evidence;
 - supports ImageGen-based pictogram exploration when a custom art layer is needed.
@@ -22,7 +22,7 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 The renderer uses only Node.js built-ins. Copy a template, replace the documented stages and labels, then render both languages.
 
-Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs become a smaller relevant set. Use `layout: "loop"` when a response changes the next cycle. Use `before-after` when the structural difference is the argument, and `dual-loop` when two cycles operate on different time horizons.
+Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs become a smaller relevant set. Use `layout: "loop"` when a response changes the next cycle. Use `branch` when one path reaches a meaningful divergence. Use `before-after` when the structural difference is the argument, and `dual-loop` when two cycles operate on different time horizons.
 
 ## Layout catalog
 
@@ -49,6 +49,14 @@ Use when the last state or a human response changes what happens next.
 ![Loop example: Agent feedback cycle](examples/agent-feedback-loop.en.svg)
 
 [Template JSON](templates/agent-feedback-loop.json) · [Chinese SVG](examples/agent-feedback-loop.zh.svg) · [English SVG](examples/agent-feedback-loop.en.svg) · [Art layer](examples/agent-feedback-loop.art.svg)
+
+### Branch — one path diverges into different goals
+
+Use when a shared adoption path or input reaches a real decision point and produces several outcomes with different optimization targets.
+
+![Branch example: Agent market divergence](examples/agent-divergence.en.svg)
+
+[Template JSON](templates/agent-divergence.json) · [Chinese SVG](examples/agent-divergence.zh.svg) · [English SVG](examples/agent-divergence.en.svg) · [Art layer](examples/agent-divergence.art.svg)
 
 ### Before/After — compare two causal structures
 

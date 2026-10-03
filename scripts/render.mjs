@@ -35,6 +35,10 @@ if (layout === 'dual-loop') {
   if (!Array.isArray(spec.loops) || spec.loops.length !== 2 || spec.loops.some((loop) => !Array.isArray(loop.stages) || loop.stages.length !== 3)) {
     throw new Error('dual-loop layout requires two loops with three stages each');
   }
+} else if (layout === 'branch') {
+  if (!Array.isArray(spec.stages) || spec.stages.length !== 3 || !Array.isArray(spec.branches) || spec.branches.length !== 3) {
+    throw new Error('branch layout requires three stages and three branches');
+  }
 } else if (!Array.isArray(spec.stages) || spec.stages.length < 3 || spec.stages.length > 5) {
   throw new Error('templates require 3–5 stages');
 }
@@ -214,6 +218,43 @@ function renderLoopText(lang) {
   return `<g id="text-layer" data-language="${lang}" data-layout="loop">${stages}${centerLabel}</g>`;
 }
 
+const branchStageCenters = [[180, 450], [500, 450], [820, 450]];
+const branchOutcomeCenters = [[1260, 190], [1380, 450], [1260, 710]];
+
+function renderBranchArt() {
+  const stageArt = spec.stages.map((stage, index) => {
+    const [x, y] = branchStageCenters[index];
+    const fill = index === 2 ? palette.coreSoft : palette.quiet;
+    return `<g id="branch-stage-${esc(stage.id)}"><circle cx="${x}" cy="${y}" r="92" fill="${fill}" stroke="${palette.line}" stroke-width="4"/>${icon(stage.icon, x, y)}</g>`;
+  }).join('');
+  const stageArrows = `${arrowLine(275, 450, 405, 450)}${arrowLine(595, 450, 725, 450)}${arrowLine(915, 450, 965, 450, palette.verified)}`;
+  const branchArt = spec.branches.map((branch, index) => {
+    const [x, y] = branchOutcomeCenters[index];
+    const fills = [palette.verifiedSoft, palette.coreSoft, '#fff0eb'];
+    return `<g id="branch-outcome-${esc(branch.id)}"><circle cx="${x}" cy="${y}" r="86" fill="${fills[index]}" stroke="${palette.line}" stroke-width="4"/>${icon(branch.icon, x, y)}</g>`;
+  }).join('');
+  const branchArrows = `${arrowLine(978, 438, 1174, 215, palette.verified)}${arrowLine(985, 450, 1290, 450, palette.core)}${arrowLine(978, 462, 1174, 685, palette.failure)}`;
+  return `<g id="art-layer" data-layout="branch" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/>${stageArt}${stageArrows}<circle cx="975" cy="450" r="18" fill="${palette.ink}"/>${branchArrows}${branchArt}</g>`;
+}
+
+function renderBranchText(lang) {
+  const stages = spec.stages.map((stage, index) => {
+    const [x] = branchStageCenters[index];
+    const title = stage.title?.[lang] ?? stage.title?.en ?? '';
+    const note = stage.note?.[lang] ?? stage.note?.en ?? '';
+    return `<g id="branch-stage-${esc(stage.id)}-text">${textBlock(x, 580, title, { size: 24, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 15 })}${textBlock(x, 620, note, { size: 16, color: palette.inactive, anchor: 'middle', max: lang === 'zh' ? 12 : 24 })}</g>`;
+  }).join('');
+  const branches = spec.branches.map((branch, index) => {
+    const [x, y] = branchOutcomeCenters[index];
+    const title = branch.title?.[lang] ?? branch.title?.en ?? '';
+    const note = branch.note?.[lang] ?? branch.note?.en ?? '';
+    const titleY = y + 118;
+    return `<g id="branch-outcome-${esc(branch.id)}-text">${textBlock(x, titleY, title, { size: 25, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 15 })}${textBlock(x, titleY + 34, note, { size: 15, color: palette.inactive, anchor: 'middle', max: lang === 'zh' ? 13 : 27, lineHeight: 1.15 })}</g>`;
+  }).join('');
+  const statement = textBlock(800, 85, spec.centerLabel?.[lang] ?? spec.centerLabel?.en ?? '', { size: 29, weight: 760, color: palette.verified, anchor: 'middle', max: lang === 'zh' ? 24 : 52 });
+  return `<g id="text-layer" data-language="${lang}" data-layout="branch" data-style="editorial">${statement}${stages}${branches}</g>`;
+}
+
 const beforeAfterCenters = [210, 590, 1010, 1390];
 
 function renderBeforeAfterArt() {
@@ -269,7 +310,8 @@ function renderDualLoopArt() {
     }).join('');
     return `<g id="dual-loop-${esc(loop.id)}">${paths}${nodeArt}</g>`;
   }).join('');
-  const bridge = `${arrowLine(705, 385, 895, 385, palette.verified)}${arrowLine(895, 525, 705, 525, palette.failure)}<path d="M690 760h220" stroke="${palette.line}" stroke-width="2"/>`;
+  const bridgeColors = spec.bridge?.colors ?? [palette.verified, palette.failure];
+  const bridge = `${arrowLine(705, 385, 895, 385, bridgeColors[0])}${arrowLine(895, 525, 705, 525, bridgeColors[1])}<path d="M690 760h220" stroke="${palette.line}" stroke-width="2"/>`;
   return `<g id="art-layer" data-layout="dual-loop" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/>${defs}<circle cx="800" cy="455" r="112" fill="${palette.quiet}"/>${loops}${bridge}</g>`;
 }
 
@@ -280,8 +322,10 @@ function renderDualLoopText(lang) {
       const [x, y] = nodes[stageIndex];
       return textBlock(x, y + 108, stage.title?.[lang] ?? stage.title?.en ?? '', { size: 21, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 14 });
     }).join('');
-    const center = index === 0 ? [420, 430] : [1180, 430];
-    return `<g id="dual-loop-${esc(loop.id)}-text">${textBlock(center[0], center[1], loop.label?.[lang] ?? loop.label?.en ?? '', { size: 36, weight: 760, color: loop.color, anchor: 'middle', max: 16 })}${nodeText}</g>`;
+    const label = loop.label?.[lang] ?? loop.label?.en ?? '';
+    const center = lang === 'en' ? (index === 0 ? [390, 430] : [1210, 430]) : (index === 0 ? [420, 430] : [1180, 430]);
+    const labelSize = lang === 'en' && label.length > 8 ? 30 : 36;
+    return `<g id="dual-loop-${esc(loop.id)}-text">${textBlock(center[0], center[1], label, { size: labelSize, weight: 760, color: loop.color, anchor: 'middle', max: 16 })}${nodeText}</g>`;
   }).join('');
   const bridgeLabel = textBlock(800, 442, spec.bridge?.label?.[lang] ?? spec.bridge?.label?.en ?? '', { size: 23, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 18 });
   const roles = (spec.bridge?.roles ?? []).map((role) => role[lang] ?? role.en).join('  →  ');
@@ -294,10 +338,10 @@ function svg(body) {
 }
 
 fs.mkdirSync(outputDir, { recursive: true });
-const art = layout === 'filter' ? renderFilterArt() : layout === 'loop' ? renderLoopArt() : layout === 'before-after' ? renderBeforeAfterArt() : layout === 'dual-loop' ? renderDualLoopArt() : renderPipelineArt();
+const art = layout === 'filter' ? renderFilterArt() : layout === 'loop' ? renderLoopArt() : layout === 'branch' ? renderBranchArt() : layout === 'before-after' ? renderBeforeAfterArt() : layout === 'dual-loop' ? renderDualLoopArt() : renderPipelineArt();
 fs.writeFileSync(path.join(outputDir, `${spec.slug}.art.svg`), svg(art));
 for (const lang of ['zh', 'en']) {
-  const text = layout === 'filter' ? renderFilterText(lang) : layout === 'loop' ? renderLoopText(lang) : layout === 'before-after' ? renderBeforeAfterText(lang) : layout === 'dual-loop' ? renderDualLoopText(lang) : renderPipelineText(lang);
+  const text = layout === 'filter' ? renderFilterText(lang) : layout === 'loop' ? renderLoopText(lang) : layout === 'branch' ? renderBranchText(lang) : layout === 'before-after' ? renderBeforeAfterText(lang) : layout === 'dual-loop' ? renderDualLoopText(lang) : renderPipelineText(lang);
   fs.writeFileSync(path.join(outputDir, `${spec.slug}.${lang}.svg`), svg(`${art}${text}`));
 }
 console.log(JSON.stringify({ ok: true, slug: spec.slug, outputs: ['art', 'zh', 'en'].map((suffix) => path.join(outputDir, `${spec.slug}.${suffix}.svg`)) }, null, 2));

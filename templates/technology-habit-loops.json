@@ -1,0 +1,39 @@
+{
+  "slug": "technology-habit-loops",
+  "layout": "dual-loop",
+  "style": "editorial",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "loops": [
+    {
+      "id": "technology",
+      "label": { "zh": "技术快循环", "en": "FAST TECH" },
+      "color": "#73c6d4",
+      "soft": "#e8f7f8",
+      "stages": [
+        { "id": "improve", "icon": "agent", "title": { "zh": "能力增强", "en": "CAPABILITY" } },
+        { "id": "encapsulate", "icon": "services", "title": { "zh": "操作封装", "en": "ENCAPSULATE" } },
+        { "id": "recede", "icon": "code", "title": { "zh": "退到幕后", "en": "RECEDE" } }
+      ]
+    },
+    {
+      "id": "habit",
+      "label": { "zh": "习惯慢循环", "en": "SLOW HABITS" },
+      "color": "#579260",
+      "soft": "#e4f1e5",
+      "stages": [
+        { "id": "repeat", "icon": "context", "title": { "zh": "重复使用", "en": "REPEAT" } },
+        { "id": "default", "icon": "select", "title": { "zh": "形成默认", "en": "BECOME DEFAULT" } },
+        { "id": "ecosystem", "icon": "database", "title": { "zh": "生态生长", "en": "ECOSYSTEM" } }
+      ]
+    }
+  ],
+  "bridge": {
+    "label": { "zh": "彼此塑造", "en": "SHAPE EACH OTHER" },
+    "colors": ["#73c6d4", "#579260"],
+    "roles": [
+      { "zh": "能力", "en": "CAPABILITY" },
+      { "zh": "行为", "en": "BEHAVIOR" },
+      { "zh": "生态", "en": "ECOSYSTEM" }
+    ]
+  }
+}

@@ -39,6 +39,13 @@ test('every template has bilingual stage titles', () => {
       }
       continue;
     }
+    if (spec.layout === 'branch') {
+      assert.equal(spec.stages.length, 3, `${name}: requires three stages`);
+      assert.equal(spec.branches.length, 3, `${name}: requires three branches`);
+      for (const stage of spec.stages) assert.ok(stage.title.zh && stage.title.en, `${name}/${stage.id}: missing bilingual title`);
+      for (const branch of spec.branches) assert.ok(branch.title.zh && branch.title.en, `${name}/${branch.id}: missing bilingual branch title`);
+      continue;
+    }
     assert.ok(spec.stages.length >= 3 && spec.stages.length <= 5, `${name}: requires 3–5 stages`);
     for (const stage of spec.stages) {
       assert.ok(stage.title.zh && stage.title.en, `${name}/${stage.id}: missing bilingual title`);
@@ -103,6 +110,21 @@ test('renders two connected editorial flywheels', () => {
   assert.match(art, /M895 525L705 525/);
   assert.match(en, /PRESENT/);
   assert.match(en, /CONTINUOUS[\s\S]*EXCHANGE/);
+});
+
+test('renders one adoption path diverging into three outcomes', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-branch-'));
+  const template = path.join(root, 'templates/agent-divergence.json');
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+
+  const art = fs.readFileSync(path.join(output, 'agent-divergence.art.svg'), 'utf8');
+  const zh = fs.readFileSync(path.join(output, 'agent-divergence.zh.svg'), 'utf8');
+  const en = fs.readFileSync(path.join(output, 'agent-divergence.en.svg'), 'utf8');
+  assert.match(art, /data-layout="branch"/);
+  assert.match(art, /data-style="editorial"/);
+  assert.match(zh, /自我发展/);
+  assert.match(en, /ENTERTAINMENT/);
 });
 
 test('builds a paired bilingual QA gallery', () => {

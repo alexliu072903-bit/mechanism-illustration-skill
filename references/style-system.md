@@ -81,6 +81,7 @@ Constraints: use the translations verbatim; do not add, remove, move, or redraw 
 - `pipeline`: a one-way sequence with a meaningful order and a terminal output.
 - `filter`: many possible inputs are reduced to a smaller relevant set before downstream use.
 - `loop`: the last state or human response changes the context for the next cycle; the changed next cycle belongs in the center.
+- `branch`: one adoption path or shared input reaches a real divergence point and produces several outcomes with different goals; do not use it for optional steps in a normal pipeline.
 - `before-after`: two different causal structures are compared across a central divider; use it only when the changed structure is the argument.
 - `dual-loop`: two cycles run on different time horizons and exchange signals; use it only when both cycles must keep moving.
 

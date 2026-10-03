@@ -44,11 +44,12 @@ evidence_boundary: what this image must not imply
 - **Pipeline:** a sequence that must happen in order.
 - **Filter:** many inputs become a smaller relevant set.
 - **Loop:** output or correction changes the next cycle.
+- **Branch:** one established path diverges into several outcomes with different optimization targets.
 - **Before / after:** an old path and a changed path, only when the comparison is the point.
 
 Use one dominant grammar. A secondary loop is allowed; competing main paths are not.
 
-The bundled deterministic renderer implements `pipeline`, `filter`, `loop`, `before-after`, and the writing-specific `dual-loop`. Do not fake one grammar by relabeling another.
+The bundled deterministic renderer implements `pipeline`, `filter`, `loop`, `branch`, `before-after`, and the writing-specific `dual-loop`. Do not fake one grammar by relabeling another.
 
 ## Generate
 
