@@ -2,15 +2,16 @@
 
 A Codex Skill and dependency-free SVG renderer for turning documented workflows into consistent bilingual mechanism illustrations.
 
-![English example: Telegram Mini App deployment mechanism](examples/telegram-miniapp.en.svg)
+![Mechanism Illustration workflow from contract to verified bilingual output](examples/mechanism-illustration.en.svg)
 
-*Rendered deterministically from [`templates/telegram-miniapp.json`](templates/telegram-miniapp.json). The same art layer also produces a [Chinese version](examples/telegram-miniapp.zh.svg).*
+*The Skill's own workflow, rendered deterministically from [`templates/mechanism-illustration.json`](templates/mechanism-illustration.json). The same art layer also produces a [Chinese version](examples/mechanism-illustration.zh.svg).*
 
 ## What it does
 
 - extracts a small mechanism contract before drawing;
 - separates the reusable art layer from Chinese and English text layers;
 - renders deterministic `art.svg`, `zh.svg`, and `en.svg` files from JSON;
+- includes distinct Pipeline and Filter layout grammars instead of forcing every mechanism into one row of steps;
 - keeps generated explainers separate from product evidence;
 - supports ImageGen-based pictogram exploration when a custom art layer is needed.
 
@@ -23,6 +24,16 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 ```
 
 The renderer uses only Node.js built-ins. Copy a template, replace the documented stages and labels, then render both languages.
+
+Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs must become a smaller relevant set; `templates/cairn-context.json` is the reference implementation.
+
+## Layout grammars
+
+Pipeline keeps a strict order. Filter makes the reduction from many possible inputs to a small relevant set visible instead of disguising it as another sequence.
+
+![Filter layout example based on Cairn Context](examples/cairn-filter.en.svg)
+
+The original Telegram deployment example remains available in [English](examples/telegram-miniapp.en.svg) and [Chinese](examples/telegram-miniapp.zh.svg).
 
 ## Use as a Codex Skill
 

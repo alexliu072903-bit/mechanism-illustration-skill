@@ -1,0 +1,56 @@
+{
+  "slug": "mechanism-illustration-workflow",
+  "layout": "pipeline",
+  "colors": { "core": "#f0a16d", "coreSoft": "#fff0e7" },
+  "stages": [
+    {
+      "id": "contract",
+      "icon": "document",
+      "title": { "zh": "机制契约", "en": "MECHANISM CONTRACT" },
+      "items": [
+        { "zh": "触发与输入", "en": "Trigger and input" },
+        { "zh": "用户保留的决定", "en": "Human decision" },
+        { "zh": "输出与边界", "en": "Output and boundary" }
+      ]
+    },
+    {
+      "id": "grammar",
+      "icon": "select",
+      "title": { "zh": "选择图形语法", "en": "CHOOSE GRAMMAR" },
+      "items": [
+        { "zh": "Pipeline", "en": "Pipeline" },
+        { "zh": "Filter", "en": "Filter" },
+        { "zh": "Loop 或对照", "en": "Loop or comparison" }
+      ]
+    },
+    {
+      "id": "art",
+      "icon": "services",
+      "title": { "zh": "共享图形层", "en": "SHARED ART LAYER" },
+      "items": [
+        { "zh": "节点与图标", "en": "Nodes and pictograms" },
+        { "zh": "箭头与语义色", "en": "Arrows and semantic color" }
+      ]
+    },
+    {
+      "id": "language",
+      "icon": "context",
+      "title": { "zh": "双语文字层", "en": "BILINGUAL TEXT" },
+      "items": [
+        { "zh": "中文 SVG", "en": "Chinese SVG" },
+        { "zh": "英文 SVG", "en": "English SVG" },
+        { "zh": "文字确定性渲染", "en": "Deterministic labels" }
+      ]
+    },
+    {
+      "id": "verify",
+      "icon": "diff",
+      "title": { "zh": "检查与发布", "en": "VERIFY & PUBLISH" },
+      "items": [
+        { "zh": "逐字检查", "en": "Check every label" },
+        { "zh": "移动端可读", "en": "Verify mobile legibility" },
+        { "zh": "说明与证据分开", "en": "Separate explanation and proof" }
+      ]
+    }
+  ]
+}

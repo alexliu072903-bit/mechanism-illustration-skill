@@ -38,3 +38,16 @@ test('every template has bilingual stage titles', () => {
     }
   }
 });
+
+test('renders Cairn Context with the filter layout', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-filter-'));
+  const template = path.join(root, 'templates/cairn-context.json');
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+
+  const art = fs.readFileSync(path.join(output, 'cairn-context-mechanism.art.svg'), 'utf8');
+  const zh = fs.readFileSync(path.join(output, 'cairn-context-mechanism.zh.svg'), 'utf8');
+  assert.match(art, /data-layout="filter"/);
+  assert.match(zh, /相关性筛选/);
+  assert.match(zh, /纠正形成修订记录/);
+});

@@ -48,6 +48,8 @@ evidence_boundary: what this image must not imply
 
 Use one dominant grammar. A secondary loop is allowed; competing main paths are not.
 
+The bundled deterministic renderer currently implements `pipeline` and `filter`. Use the conceptual Loop or Before / after grammars only with a purpose-built layout; do not fake them by relabeling a Pipeline.
+
 ## Generate
 
 Use the built-in image generation tool in `infographic-diagram` mode. Use one call per distinct asset. A supplied image is a style reference unless the user explicitly asks to edit it.

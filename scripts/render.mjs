@@ -90,7 +90,7 @@ function textBlock(x, y, text, { size = 18, weight = 560, color = palette.ink, a
   return `<text x="${x}" y="${y}" fill="${color}" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}">${lines.map((line, i) => `<tspan x="${x}" dy="${i === 0 ? 0 : size * lineHeight}">${esc(line)}</tspan>`).join('')}</text>`;
 }
 
-function renderArt() {
+function renderPipelineArt() {
   const stages = spec.stages.map((stage, index) => {
     const x = startX + index * (stageWidth + gap);
     const center = x + stageWidth / 2;
@@ -105,7 +105,7 @@ function renderArt() {
   return `<g id="art-layer"><rect width="${width}" height="${height}" fill="#fff"/>${stages}${loop}</g>`;
 }
 
-function renderText(lang) {
+function renderPipelineText(lang) {
   const stages = spec.stages.map((stage, index) => {
     const x = startX + index * (stageWidth + gap);
     const center = x + stageWidth / 2;
@@ -118,14 +118,55 @@ function renderText(lang) {
   return `<g id="text-layer" data-language="${lang}">${stages}${loopLabel}</g>`;
 }
 
+const filterCenters = [185, 500, 815, 1130, 1415];
+const filterWidths = [285, 235, 250, 220, 220];
+
+function renderFilterArt() {
+  if (spec.stages.length !== 5) throw new Error('filter layout requires exactly 5 stages');
+  const arrows = filterCenters.slice(0, -1).map((center, index) => {
+    const from = center + filterWidths[index] / 2 + 12;
+    const to = filterCenters[index + 1] - filterWidths[index + 1] / 2 - 12;
+    return `<path d="M${from} 310H${to}" stroke="${palette.line}" stroke-width="5" stroke-linecap="round"/><path d="M${to - 13} 299l12 11-12 11" fill="none" stroke="${palette.line}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }).join('');
+  const stages = spec.stages.map((stage, index) => {
+    const center = filterCenters[index];
+    const w = filterWidths[index];
+    const x = center - w / 2;
+    const items = (stage.items ?? []).map((_, itemIndex) => check(x + 8, 445 + itemIndex * 47)).join('');
+    const surface = index === 0 || index === 2
+      ? `<rect x="${x}" y="150" width="${w}" height="515" rx="24" fill="${index === 2 ? palette.coreSoft : palette.quiet}" stroke="${palette.line}" stroke-width="4"/>`
+      : '';
+    const titleTab = `<rect x="${center - Math.min(w - 18, 210) / 2}" y="112" width="${Math.min(w - 18, 210)}" height="56" rx="18" fill="${palette.verifiedSoft}"/>`;
+    const inputCards = index === 0 ? [-72, -34, 4, 42].map((dy, i) => `<rect x="${x + 25 + (i % 2) * 126}" y="${218 + dy}" width="108" height="34" rx="7" fill="#fff" stroke="${i < 2 ? palette.verified : palette.inactive}" stroke-width="3"/><circle cx="${x + 42 + (i % 2) * 126}" cy="${235 + dy}" r="6" fill="${i < 2 ? palette.verified : palette.inactive}"/><path d="M${x + 55 + (i % 2) * 126} ${235 + dy}h54" stroke="${palette.inactive}" stroke-width="4" stroke-linecap="round"/>`).join('') : '';
+    return `<g id="filter-stage-${esc(stage.id)}">${surface}${titleTab}${inputCards}${icon(stage.icon, center, 320)}${items}</g>`;
+  }).join('');
+  const loop = `<path d="M${filterCenters[4]} 710v90H${filterCenters[0]}v-90" fill="none" stroke="${palette.failure}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M${filterCenters[0] - 11} 724l11-14 11 14" fill="none" stroke="${palette.failure}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return `<g id="art-layer" data-layout="filter"><rect width="${width}" height="${height}" fill="#fff"/>${stages}${arrows}${loop}</g>`;
+}
+
+function renderFilterText(lang) {
+  const stages = spec.stages.map((stage, index) => {
+    const center = filterCenters[index];
+    const w = filterWidths[index];
+    const x = center - w / 2;
+    const title = stage.title?.[lang] ?? stage.title?.en ?? '';
+    const items = (stage.items ?? []).map((item, itemIndex) => textBlock(x + 48, 466 + itemIndex * 47, item[lang] ?? item.en, { size: 16, max: lang === 'zh' ? 10 : 20 })).join('');
+    return `<g id="filter-stage-${esc(stage.id)}-text">${textBlock(center, 145, title, { size: 23, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 14 })}${items}</g>`;
+  }).join('');
+  const loopLabel = textBlock(width / 2, 842, spec.loop?.label?.[lang] ?? spec.loop?.label?.en ?? '', { size: 24, weight: 760, color: palette.failure, anchor: 'middle', max: 24 });
+  return `<g id="text-layer" data-language="${lang}" data-layout="filter">${stages}${loopLabel}</g>`;
+}
+
 function svg(body) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img">${body}</svg>\n`;
 }
 
 fs.mkdirSync(outputDir, { recursive: true });
-const art = renderArt();
+const layout = spec.layout ?? 'pipeline';
+const art = layout === 'filter' ? renderFilterArt() : renderPipelineArt();
 fs.writeFileSync(path.join(outputDir, `${spec.slug}.art.svg`), svg(art));
 for (const lang of ['zh', 'en']) {
-  fs.writeFileSync(path.join(outputDir, `${spec.slug}.${lang}.svg`), svg(`${art}${renderText(lang)}`));
+  const text = layout === 'filter' ? renderFilterText(lang) : renderPipelineText(lang);
+  fs.writeFileSync(path.join(outputDir, `${spec.slug}.${lang}.svg`), svg(`${art}${text}`));
 }
 console.log(JSON.stringify({ ok: true, slug: spec.slug, outputs: ['art', 'zh', 'en'].map((suffix) => path.join(outputDir, `${spec.slug}.${suffix}.svg`)) }, null, 2));
