@@ -2,6 +2,10 @@
 
 A Codex Skill and dependency-free SVG renderer for turning documented workflows into consistent bilingual mechanism illustrations.
 
+![English example: Telegram Mini App deployment mechanism](examples/telegram-miniapp.en.svg)
+
+*Rendered deterministically from [`templates/telegram-miniapp.json`](templates/telegram-miniapp.json). The same art layer also produces a [Chinese version](examples/telegram-miniapp.zh.svg).*
+
 ## What it does
 
 - extracts a small mechanism contract before drawing;

@@ -2,6 +2,10 @@
 
 一个 Codex Skill 与零依赖 SVG 渲染器：把已经确认的产品机制、流程或系统转换为稳定的中英双语说明图。
 
+![中文示例：Telegram Mini App 部署机制图](examples/telegram-miniapp.zh.svg)
+
+*由 [`templates/telegram-miniapp.json`](templates/telegram-miniapp.json) 确定性渲染；同一图形层同时生成[英文版本](examples/telegram-miniapp.en.svg)。*
+
 ## 它解决什么
 
 - 画图前先提取一份小型机制契约；
