@@ -51,3 +51,16 @@ test('renders Cairn Context with the filter layout', () => {
   assert.match(zh, /相关性筛选/);
   assert.match(zh, /纠正形成修订记录/);
 });
+
+test('renders a closed Agent feedback loop', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-loop-'));
+  const template = path.join(root, 'templates/agent-feedback-loop.json');
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+
+  const art = fs.readFileSync(path.join(output, 'agent-feedback-loop.art.svg'), 'utf8');
+  const en = fs.readFileSync(path.join(output, 'agent-feedback-loop.en.svg'), 'utf8');
+  assert.match(art, /data-layout="loop"/);
+  assert.match(en, /THE NEXT CYCLE/);
+  assert.match(en, /STATE UPDATE/);
+});

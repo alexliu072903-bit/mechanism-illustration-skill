@@ -48,7 +48,7 @@ evidence_boundary: what this image must not imply
 
 Use one dominant grammar. A secondary loop is allowed; competing main paths are not.
 
-The bundled deterministic renderer currently implements `pipeline` and `filter`. Use the conceptual Loop or Before / after grammars only with a purpose-built layout; do not fake them by relabeling a Pipeline.
+The bundled deterministic renderer implements `pipeline`, `filter`, and `loop`. Before / after remains conceptual until it has a purpose-built layout; do not fake it by relabeling a Pipeline.
 
 ## Generate
 

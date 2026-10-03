@@ -157,16 +157,68 @@ function renderFilterText(lang) {
   return `<g id="text-layer" data-language="${lang}" data-layout="filter">${stages}${loopLabel}</g>`;
 }
 
+const loopPositions = [
+  { x: 70, y: 330, w: 250, h: 230 },
+  { x: 370, y: 80, w: 250, h: 230 },
+  { x: 980, y: 80, w: 250, h: 230 },
+  { x: 1280, y: 330, w: 250, h: 230 },
+  { x: 675, y: 590, w: 250, h: 230 },
+];
+
+function arrowLine(x1, y1, x2, y2, color = palette.line) {
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  const size = 14;
+  const ax = x2 - Math.cos(angle) * size;
+  const ay = y2 - Math.sin(angle) * size;
+  const leftX = ax + Math.cos(angle + Math.PI / 2) * 10;
+  const leftY = ay + Math.sin(angle + Math.PI / 2) * 10;
+  const rightX = ax + Math.cos(angle - Math.PI / 2) * 10;
+  const rightY = ay + Math.sin(angle - Math.PI / 2) * 10;
+  return `<path d="M${x1} ${y1}L${x2} ${y2}" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round"/><path d="M${leftX} ${leftY}L${x2} ${y2}L${rightX} ${rightY}" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function renderLoopArt() {
+  if (spec.stages.length !== 5) throw new Error('loop layout requires exactly 5 stages');
+  const stages = spec.stages.map((stage, index) => {
+    const pos = loopPositions[index];
+    const centerX = pos.x + pos.w / 2;
+    const iconY = index === 4 ? pos.y + 70 : pos.y + 95;
+    const itemChecks = (stage.items ?? []).slice(0, 2).map((_, itemIndex) => check(pos.x + 14, pos.y + 158 + itemIndex * 32)).join('');
+    return `<g id="loop-stage-${esc(stage.id)}"><rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="22" fill="#fff" stroke="${palette.line}" stroke-width="4"/><rect x="${pos.x + 28}" y="${pos.y - 22}" width="${pos.w - 56}" height="52" rx="17" fill="${palette.verifiedSoft}"/>${icon(stage.icon, centerX, iconY)}${itemChecks}</g>`;
+  }).join('');
+  const arrows = [
+    arrowLine(305, 350, 398, 280),
+    arrowLine(630, 195, 965, 195),
+    arrowLine(1205, 280, 1295, 350),
+    arrowLine(1300, 565, 930, 650),
+    arrowLine(670, 650, 300, 565),
+  ].join('');
+  const center = `<g><circle cx="800" cy="440" r="125" fill="${palette.coreSoft}" stroke="${palette.line}" stroke-width="4"/><circle cx="800" cy="440" r="92" fill="#fff" stroke="${palette.verified}" stroke-width="4" stroke-dasharray="10 10"/></g>`;
+  return `<g id="art-layer" data-layout="loop"><rect width="${width}" height="${height}" fill="#fff"/>${center}${arrows}${stages}</g>`;
+}
+
+function renderLoopText(lang) {
+  const stages = spec.stages.map((stage, index) => {
+    const pos = loopPositions[index];
+    const centerX = pos.x + pos.w / 2;
+    const title = stage.title?.[lang] ?? stage.title?.en ?? '';
+    const items = (stage.items ?? []).slice(0, 2).map((item, itemIndex) => textBlock(pos.x + 54, pos.y + 179 + itemIndex * 32, item[lang] ?? item.en, { size: 14, max: lang === 'zh' ? 9 : 18, lineHeight: 1.08 })).join('');
+    return `<g id="loop-stage-${esc(stage.id)}-text">${textBlock(centerX, pos.y + 9, title, { size: 22, weight: 760, anchor: 'middle', max: lang === 'zh' ? 8 : 14 })}${items}</g>`;
+  }).join('');
+  const centerLabel = textBlock(800, 426, spec.centerLabel?.[lang] ?? spec.centerLabel?.en ?? '', { size: 28, weight: 760, color: palette.verified, anchor: 'middle', max: lang === 'zh' ? 8 : 16, lineHeight: 1.15 });
+  return `<g id="text-layer" data-language="${lang}" data-layout="loop">${stages}${centerLabel}</g>`;
+}
+
 function svg(body) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img">${body}</svg>\n`;
 }
 
 fs.mkdirSync(outputDir, { recursive: true });
 const layout = spec.layout ?? 'pipeline';
-const art = layout === 'filter' ? renderFilterArt() : renderPipelineArt();
+const art = layout === 'filter' ? renderFilterArt() : layout === 'loop' ? renderLoopArt() : renderPipelineArt();
 fs.writeFileSync(path.join(outputDir, `${spec.slug}.art.svg`), svg(art));
 for (const lang of ['zh', 'en']) {
-  const text = layout === 'filter' ? renderFilterText(lang) : renderPipelineText(lang);
+  const text = layout === 'filter' ? renderFilterText(lang) : layout === 'loop' ? renderLoopText(lang) : renderPipelineText(lang);
   fs.writeFileSync(path.join(outputDir, `${spec.slug}.${lang}.svg`), svg(`${art}${text}`));
 }
 console.log(JSON.stringify({ ok: true, slug: spec.slug, outputs: ['art', 'zh', 'en'].map((suffix) => path.join(outputDir, `${spec.slug}.${suffix}.svg`)) }, null, 2));

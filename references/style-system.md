@@ -59,6 +59,12 @@ Constraints: use the translations verbatim; do not add, remove, move, or redraw 
 - At mobile card size, stage headings and primary arrows must remain legible even if annotations become secondary.
 - For more than seven labels or more than one recurring language, generate a text-free art layer and overlay text deterministically. This is the production path; full-image localization is the fast preview path.
 
+## Layout selection
+
+- `pipeline`: a one-way sequence with a meaningful order and a terminal output.
+- `filter`: many possible inputs are reduced to a smaller relevant set before downstream use.
+- `loop`: the last state or human response changes the context for the next cycle; the changed next cycle belongs in the center.
+
 ## Existing site examples
 
 - Resume.AI: materials -> user chooses Context -> rewrite -> Diff review -> export.

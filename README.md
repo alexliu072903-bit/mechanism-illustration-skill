@@ -11,7 +11,7 @@ A Codex Skill and dependency-free SVG renderer for turning documented workflows 
 - extracts a small mechanism contract before drawing;
 - separates the reusable art layer from Chinese and English text layers;
 - renders deterministic `art.svg`, `zh.svg`, and `en.svg` files from JSON;
-- includes distinct Pipeline and Filter layout grammars instead of forcing every mechanism into one row of steps;
+- includes distinct Pipeline, Filter, and Loop layout grammars instead of forcing every mechanism into one row of steps;
 - keeps generated explainers separate from product evidence;
 - supports ImageGen-based pictogram exploration when a custom art layer is needed.
 
@@ -25,13 +25,15 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 The renderer uses only Node.js built-ins. Copy a template, replace the documented stages and labels, then render both languages.
 
-Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs must become a smaller relevant set; `templates/cairn-context.json` is the reference implementation.
+Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs must become a smaller relevant set. Use `layout: "loop"` when an output or user response changes the next cycle.
 
 ## Layout grammars
 
-Pipeline keeps a strict order. Filter makes the reduction from many possible inputs to a small relevant set visible instead of disguising it as another sequence.
+Pipeline keeps a strict order. Filter makes the reduction from many possible inputs to a small relevant set visible. Loop closes the last state back into the first trigger and makes the changed next cycle the center of the composition.
 
 ![Filter layout example based on Cairn Context](examples/cairn-filter.en.svg)
+
+![Loop layout example based on an Agent feedback cycle](examples/agent-feedback-loop.en.svg)
 
 The original Telegram deployment example remains available in [English](examples/telegram-miniapp.en.svg) and [Chinese](examples/telegram-miniapp.zh.svg).
 

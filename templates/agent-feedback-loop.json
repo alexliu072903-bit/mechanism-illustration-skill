@@ -1,0 +1,53 @@
+{
+  "slug": "agent-feedback-loop",
+  "layout": "loop",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "centerLabel": { "zh": "下一轮行为改变", "en": "THE NEXT CYCLE CHANGES" },
+  "stages": [
+    {
+      "id": "trigger",
+      "icon": "document",
+      "title": { "zh": "真实触发", "en": "REAL TRIGGER" },
+      "items": [
+        { "zh": "任务或状态变化", "en": "Task or state change" },
+        { "zh": "不是固定打扰", "en": "Not a scheduled nudge" }
+      ]
+    },
+    {
+      "id": "context",
+      "icon": "filter",
+      "title": { "zh": "相关上下文", "en": "CONTEXT" },
+      "items": [
+        { "zh": "只选择相关信息", "en": "Select what matters" },
+        { "zh": "保留依据", "en": "Keep the basis visible" }
+      ]
+    },
+    {
+      "id": "action",
+      "icon": "agent",
+      "title": { "zh": "AGENT 行动", "en": "AGENT ACTION" },
+      "items": [
+        { "zh": "执行可逆动作", "en": "Take a reversible action" },
+        { "zh": "高影响决定留给用户", "en": "Leave high-impact calls" }
+      ]
+    },
+    {
+      "id": "review",
+      "icon": "diff",
+      "title": { "zh": "用户审阅", "en": "USER REVIEW" },
+      "items": [
+        { "zh": "接受、修改或拒绝", "en": "Accept, edit, or reject" },
+        { "zh": "纠正事实与判断", "en": "Correct facts and judgment" }
+      ]
+    },
+    {
+      "id": "state",
+      "icon": "database",
+      "title": { "zh": "状态更新", "en": "STATE UPDATE" },
+      "items": [
+        { "zh": "记录确认的变化", "en": "Record confirmed change" },
+        { "zh": "影响下一轮", "en": "Shape the next cycle" }
+      ]
+    }
+  ]
+}
