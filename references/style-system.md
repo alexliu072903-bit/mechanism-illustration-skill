@@ -88,6 +88,10 @@ Constraints: use the translations verbatim; do not add, remove, move, or redraw 
 
 Do not place more than two Mechanism Board diagrams in one continuous reading surface. Alternate Board diagrams with Editorial Field Maps, real screenshots, photographs, or text-only sections. Variety must follow the argument, not decoration.
 
+## Bilingual spacing rule
+
+Lay out each language from its own wrapped line count. Never reuse a fixed subtitle baseline after a heading that may wrap differently in Chinese and English. Connector lines, rules, and arrows need a protected text-safe zone; do not route them through labels even when one language happens to fit.
+
 ## Existing site examples
 
 - Resume.AI: materials -> user chooses Context -> rewrite -> Diff review -> export.

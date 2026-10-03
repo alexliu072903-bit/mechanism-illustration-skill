@@ -84,6 +84,8 @@ Inspect the actual output, not just the prompt. Reject or repair when any condit
 6. localization changes layout, icons, arrows, or meaning;
 7. the asset overflows or becomes unreadable at the target page width.
 
+Always inspect Chinese and English independently. A passing Chinese render is not evidence that the English title and notes fit, and the reverse is also true. For a batch, render every template, run `npm run qa:gallery`, and inspect the paired wall once at desktop size and once at the narrow target width.
+
 Make one targeted repair at a time. After two text-repair attempts, shorten labels or move detail into an HTML caption instead of repeatedly regenerating the full image.
 
 ## Publish without confusing explanation and evidence

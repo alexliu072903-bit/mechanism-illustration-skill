@@ -2,10 +2,6 @@
 
 A Codex Skill and dependency-free SVG renderer for turning documented workflows into consistent bilingual mechanism illustrations.
 
-![Mechanism Illustration workflow from contract to verified bilingual output](examples/mechanism-illustration.en.svg)
-
-*The Skill's own workflow, rendered deterministically from [`templates/mechanism-illustration.json`](templates/mechanism-illustration.json). The same art layer also produces a [Chinese version](examples/mechanism-illustration.zh.svg).*
-
 ## What it does
 
 - extracts a small mechanism contract before drawing;
@@ -28,21 +24,49 @@ The renderer uses only Node.js built-ins. Copy a template, replace the documente
 
 Use `layout: "pipeline"` for ordered stages. Use `layout: "filter"` when many possible inputs become a smaller relevant set. Use `layout: "loop"` when a response changes the next cycle. Use `before-after` when the structural difference is the argument, and `dual-loop` when two cycles operate on different time horizons.
 
-## Layout grammars
+## Layout catalog
 
-Pipeline keeps a strict order. Filter makes the reduction from many possible inputs to a small relevant set visible. Loop closes the last state back into the first trigger and makes the changed next cycle the center of the composition.
+### Pipeline — ordered stages
 
-![Filter layout example based on Cairn Context](examples/cairn-filter.en.svg)
+Use when stages have a meaningful order and a terminal output.
 
-![Loop layout example based on an Agent feedback cycle](examples/agent-feedback-loop.en.svg)
+![Pipeline example: Mechanism Illustration workflow](examples/mechanism-illustration.en.svg)
 
-The original Telegram deployment example remains available in [English](examples/telegram-miniapp.en.svg) and [Chinese](examples/telegram-miniapp.zh.svg).
+[Template JSON](templates/mechanism-illustration.json) · [Chinese SVG](examples/mechanism-illustration.zh.svg) · [English SVG](examples/mechanism-illustration.en.svg) · [Art layer](examples/mechanism-illustration.art.svg)
 
-### Editorial Field Map
+### Filter — many inputs become a relevant set
 
-![Before/After example from the AI applications essay](examples/ai-applications-before-after.en.svg)
+Use when selection is the mechanism, not merely another step.
 
-![Dual Loop example from Two Flywheels](examples/two-flywheels.en.svg)
+![Filter example: Cairn Context](examples/cairn-filter.en.svg)
+
+[Template JSON](templates/cairn-context.json) · [Chinese SVG](examples/cairn-filter.zh.svg) · [English SVG](examples/cairn-filter.en.svg) · [Art layer](examples/cairn-filter.art.svg)
+
+### Loop — feedback changes the next cycle
+
+Use when the last state or a human response changes what happens next.
+
+![Loop example: Agent feedback cycle](examples/agent-feedback-loop.en.svg)
+
+[Template JSON](templates/agent-feedback-loop.json) · [Chinese SVG](examples/agent-feedback-loop.zh.svg) · [English SVG](examples/agent-feedback-loop.en.svg) · [Art layer](examples/agent-feedback-loop.art.svg)
+
+### Before/After — compare two causal structures
+
+Use when the structural difference itself is the argument. This example uses the Editorial Field Map visual family.
+
+![Before/After example: AI+ and AI-native applications](examples/ai-applications-before-after.en.svg)
+
+[Template JSON](templates/ai-applications-before-after.json) · [Chinese SVG](examples/ai-applications-before-after.zh.svg) · [English SVG](examples/ai-applications-before-after.en.svg) · [Art layer](examples/ai-applications-before-after.art.svg)
+
+### Dual Loop — two cycles exchange signals
+
+Use when two loops operate on different time horizons and both must keep moving. This example also uses Editorial Field Map.
+
+![Dual Loop example: Two Flywheels](examples/two-flywheels.en.svg)
+
+[Template JSON](templates/two-flywheels.json) · [Chinese SVG](examples/two-flywheels.zh.svg) · [English SVG](examples/two-flywheels.en.svg) · [Art layer](examples/two-flywheels.art.svg)
+
+The more operational Telegram deployment Pipeline remains available in [English](examples/telegram-miniapp.en.svg) and [Chinese](examples/telegram-miniapp.zh.svg).
 
 ## Use as a Codex Skill
 

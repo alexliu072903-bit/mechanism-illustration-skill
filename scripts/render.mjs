@@ -226,19 +226,26 @@ function renderBeforeAfterArt() {
   }).join('');
   const leftArrow = arrowLine(335, 335, 465, 335, palette.inactive);
   const rightArrow = arrowLine(1135, 335, 1265, 335, palette.verified);
-  return `<g id="art-layer" data-layout="before-after" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/><path d="M800 80v700" stroke="${palette.line}" stroke-width="2"/><path d="M50 180h690" stroke="${palette.inactive}" stroke-width="3"/><path d="M860 180h690" stroke="${palette.verified}" stroke-width="3"/>${stages}${leftArrow}${rightArrow}</g>`;
+  return `<g id="art-layer" data-layout="before-after" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/><path d="M800 80v700" stroke="${palette.line}" stroke-width="2"/><path d="M50 230h690" stroke="${palette.inactive}" stroke-width="3"/><path d="M860 230h690" stroke="${palette.verified}" stroke-width="3"/>${stages}${leftArrow}${rightArrow}</g>`;
 }
 
 function renderBeforeAfterText(lang) {
   const sideBefore = spec.sides?.before ?? {};
   const sideAfter = spec.sides?.after ?? {};
+  const sideHeading = (x, side, noteColor) => {
+    const label = side.label?.[lang] ?? side.label?.en ?? '';
+    const note = side.note?.[lang] ?? side.note?.en ?? '';
+    const labelLines = wrap(label, 24).slice(0, 3);
+    const noteY = 105 + (labelLines.length - 1) * 34 * 1.25 + 34;
+    return `${textBlock(x, 105, label, { size: 34, weight: 760, color: palette.ink, max: 24 })}${textBlock(x, noteY, note, { size: 16, color: noteColor, max: lang === 'zh' ? 28 : 60 })}`;
+  };
   const stages = spec.stages.map((stage, index) => {
     const center = beforeAfterCenters[index];
     const title = stage.title?.[lang] ?? stage.title?.en ?? '';
     const items = (stage.items ?? []).slice(0, 2).map((item, itemIndex) => textBlock(center - 88, 551 + itemIndex * 38, item[lang] ?? item.en, { size: 17, max: lang === 'zh' ? 11 : 23 })).join('');
     return `<g id="before-after-stage-${esc(stage.id)}-text">${textBlock(center, 485, title, { size: 24, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 16 })}${items}</g>`;
   }).join('');
-  const headings = `${textBlock(50, 105, sideBefore.label?.[lang] ?? sideBefore.label?.en ?? '', { size: 34, weight: 760, color: palette.ink, max: 24 })}${textBlock(50, 138, sideBefore.note?.[lang] ?? sideBefore.note?.en ?? '', { size: 16, color: palette.inactive, max: lang === 'zh' ? 28 : 60 })}${textBlock(860, 105, sideAfter.label?.[lang] ?? sideAfter.label?.en ?? '', { size: 34, weight: 760, color: palette.ink, max: 24 })}${textBlock(860, 138, sideAfter.note?.[lang] ?? sideAfter.note?.en ?? '', { size: 16, color: palette.verified, max: lang === 'zh' ? 28 : 60 })}`;
+  const headings = `${sideHeading(50, sideBefore, palette.inactive)}${sideHeading(860, sideAfter, palette.verified)}`;
   const statement = textBlock(800, 835, spec.centerLabel?.[lang] ?? spec.centerLabel?.en ?? '', { size: 24, weight: 700, color: palette.failure, anchor: 'middle', max: lang === 'zh' ? 24 : 55 });
   return `<g id="text-layer" data-language="${lang}" data-layout="before-after" data-style="editorial">${headings}${stages}${statement}</g>`;
 }
@@ -262,8 +269,8 @@ function renderDualLoopArt() {
     }).join('');
     return `<g id="dual-loop-${esc(loop.id)}">${paths}${nodeArt}</g>`;
   }).join('');
-  const bridge = `${arrowLine(705, 430, 895, 430, palette.verified)}${arrowLine(895, 485, 705, 485, palette.failure)}<path d="M690 760h220" stroke="${palette.line}" stroke-width="2"/>`;
-  return `<g id="art-layer" data-layout="dual-loop" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/>${defs}<circle cx="800" cy="455" r="96" fill="${palette.quiet}"/>${loops}${bridge}</g>`;
+  const bridge = `${arrowLine(705, 385, 895, 385, palette.verified)}${arrowLine(895, 525, 705, 525, palette.failure)}<path d="M690 760h220" stroke="${palette.line}" stroke-width="2"/>`;
+  return `<g id="art-layer" data-layout="dual-loop" data-style="editorial"><rect width="${width}" height="${height}" fill="#fff"/>${defs}<circle cx="800" cy="455" r="112" fill="${palette.quiet}"/>${loops}${bridge}</g>`;
 }
 
 function renderDualLoopText(lang) {
@@ -276,7 +283,7 @@ function renderDualLoopText(lang) {
     const center = index === 0 ? [420, 430] : [1180, 430];
     return `<g id="dual-loop-${esc(loop.id)}-text">${textBlock(center[0], center[1], loop.label?.[lang] ?? loop.label?.en ?? '', { size: 36, weight: 760, color: loop.color, anchor: 'middle', max: 16 })}${nodeText}</g>`;
   }).join('');
-  const bridgeLabel = textBlock(800, 448, spec.bridge?.label?.[lang] ?? spec.bridge?.label?.en ?? '', { size: 23, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 18 });
+  const bridgeLabel = textBlock(800, 442, spec.bridge?.label?.[lang] ?? spec.bridge?.label?.en ?? '', { size: 23, weight: 760, anchor: 'middle', max: lang === 'zh' ? 9 : 18 });
   const roles = (spec.bridge?.roles ?? []).map((role) => role[lang] ?? role.en).join('  →  ');
   const rolesText = textBlock(800, 800, roles, { size: 22, weight: 650, anchor: 'middle', max: 60 });
   return `<g id="text-layer" data-language="${lang}" data-layout="dual-loop" data-style="editorial">${loops}${bridgeLabel}${rolesText}</g>`;

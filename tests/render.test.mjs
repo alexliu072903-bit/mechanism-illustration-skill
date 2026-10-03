@@ -84,6 +84,7 @@ test('renders a real before-and-after comparison', () => {
   const zh = fs.readFileSync(path.join(output, 'ai-applications-before-after.zh.svg'), 'utf8');
   assert.match(art, /data-layout="before-after"/);
   assert.match(art, /data-style="editorial"/);
+  assert.match(art, /M50 230h690/);
   assert.match(zh, /AI NATIVE/);
   assert.match(zh, /基础设施让产品成为可能/);
 });
@@ -98,6 +99,20 @@ test('renders two connected editorial flywheels', () => {
   const en = fs.readFileSync(path.join(output, 'two-flywheels.en.svg'), 'utf8');
   assert.match(art, /data-layout="dual-loop"/);
   assert.match(art, /data-style="editorial"/);
+  assert.match(art, /M705 385L895 385/);
+  assert.match(art, /M895 525L705 525/);
   assert.match(en, /PRESENT/);
   assert.match(en, /CONTINUOUS[\s\S]*EXCHANGE/);
+});
+
+test('builds a paired bilingual QA gallery', () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mechanism-gallery-'));
+  const template = path.join(root, 'templates/ai-applications-before-after.json');
+  const render = spawnSync(process.execPath, [path.join(root, 'scripts/render.mjs'), template, output], { encoding: 'utf8' });
+  assert.equal(render.status, 0, render.stderr);
+  const gallery = spawnSync(process.execPath, [path.join(root, 'scripts/render-qa-gallery.mjs'), output], { encoding: 'utf8' });
+  assert.equal(gallery.status, 0, gallery.stderr);
+  const html = fs.readFileSync(path.join(output, 'gallery.html'), 'utf8');
+  assert.match(html, /ai-applications-before-after\.zh\.svg/);
+  assert.match(html, /ai-applications-before-after\.en\.svg/);
 });

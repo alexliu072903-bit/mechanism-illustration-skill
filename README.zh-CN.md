@@ -2,10 +2,6 @@
 
 一个 Codex Skill 与零依赖 SVG 渲染器：把已经确认的产品机制、流程或系统转换为稳定的中英双语说明图。
 
-![Mechanism Illustration 从机制契约到双语验证产物的工作流](examples/mechanism-illustration.zh.svg)
-
-*Skill 自身的工作方式，由 [`templates/mechanism-illustration.json`](templates/mechanism-illustration.json) 确定性渲染；同一图形层同时生成[英文版本](examples/mechanism-illustration.en.svg)。*
-
 ## 它解决什么
 
 - 画图前先提取一份小型机制契约；
@@ -28,21 +24,49 @@ node scripts/render.mjs templates/telegram-miniapp.json dist
 
 有严格先后顺序的机制使用 `pipeline`；从很多输入中筛出少量相关内容时使用 `filter`；反馈改变下一轮时使用 `loop`；结构差异本身就是论点时使用 `before-after`；两个不同时间尺度的循环需要同时运转时使用 `dual-loop`。
 
-## 图形语法
+## 布局目录
 
-Pipeline 表达严格顺序；Filter 直接画出“很多可能输入如何减少成少量相关内容”；Loop 把最后状态接回最初触发，并把“下一轮发生了什么变化”放在画面中心。
+### Pipeline：有顺序的阶段
 
-![基于 Cairn Context 的 Filter 布局示例](examples/cairn-filter.zh.svg)
+用于阶段存在明确先后关系，并最终到达一个终点的机制。
 
-![基于 Agent feedback cycle 的 Loop 布局示例](examples/agent-feedback-loop.zh.svg)
+![Pipeline 示例：Mechanism Illustration 工作流](examples/mechanism-illustration.zh.svg)
 
-原来的 Telegram 部署示例仍可查看[中文版](examples/telegram-miniapp.zh.svg)与[英文版](examples/telegram-miniapp.en.svg)。
+[模板 JSON](templates/mechanism-illustration.json) · [中文 SVG](examples/mechanism-illustration.zh.svg) · [英文 SVG](examples/mechanism-illustration.en.svg) · [图形层](examples/mechanism-illustration.art.svg)
 
-### Editorial Field Map
+### Filter：很多输入变成相关集合
 
-![来自 AI 应用文章的 Before/After 示例](examples/ai-applications-before-after.zh.svg)
+用于“筛选”本身就是核心机制，而不是普通流程中的一个步骤。
 
-![来自《两个飞轮》的 Dual Loop 示例](examples/two-flywheels.zh.svg)
+![Filter 示例：Cairn Context](examples/cairn-filter.zh.svg)
+
+[模板 JSON](templates/cairn-context.json) · [中文 SVG](examples/cairn-filter.zh.svg) · [英文 SVG](examples/cairn-filter.en.svg) · [图形层](examples/cairn-filter.art.svg)
+
+### Loop：反馈改变下一轮
+
+用于最后状态或用户反馈会改变下一轮行为的机制。
+
+![Loop 示例：Agent feedback cycle](examples/agent-feedback-loop.zh.svg)
+
+[模板 JSON](templates/agent-feedback-loop.json) · [中文 SVG](examples/agent-feedback-loop.zh.svg) · [英文 SVG](examples/agent-feedback-loop.en.svg) · [图形层](examples/agent-feedback-loop.art.svg)
+
+### Before/After：比较两套因果结构
+
+用于“结构发生了什么变化”本身就是论点的场景。这个示例使用 Editorial Field Map 视觉语言。
+
+![Before/After 示例：AI+ 与 AI Native](examples/ai-applications-before-after.zh.svg)
+
+[模板 JSON](templates/ai-applications-before-after.json) · [中文 SVG](examples/ai-applications-before-after.zh.svg) · [英文 SVG](examples/ai-applications-before-after.en.svg) · [图形层](examples/ai-applications-before-after.art.svg)
+
+### Dual Loop：两个循环持续交换信息
+
+用于两个飞轮运行在不同时间尺度上，并且都不能停止的机制。这个示例同样使用 Editorial Field Map。
+
+![Dual Loop 示例：《两个飞轮》](examples/two-flywheels.zh.svg)
+
+[模板 JSON](templates/two-flywheels.json) · [中文 SVG](examples/two-flywheels.zh.svg) · [英文 SVG](examples/two-flywheels.en.svg) · [图形层](examples/two-flywheels.art.svg)
+
+更偏操作说明的 Telegram 部署 Pipeline 仍可查看[中文版](examples/telegram-miniapp.zh.svg)与[英文版](examples/telegram-miniapp.en.svg)。
 
 ## 作为 Codex Skill 使用
 
