@@ -13,9 +13,10 @@ const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 const layout = spec.layout ?? 'pipeline';
 const width = 1600;
 const height = 900;
-const stageWidth = 278;
-const gap = 34;
-const startX = 36;
+const compactPipeline = layout === 'pipeline' && spec.stages?.length === 3;
+const stageWidth = compactPipeline ? 420 : 278;
+const gap = compactPipeline ? 60 : 34;
+const startX = compactPipeline ? (width - (stageWidth * 3 + gap * 2)) / 2 : 36;
 const stageY = 122;
 const stageHeight = 590;
 const palette = {

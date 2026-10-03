@@ -1,0 +1,58 @@
+{
+  "slug": "work-agent-inversion",
+  "layout": "before-after",
+  "style": "editorial",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "sides": {
+    "before": {
+      "label": { "zh": "过去：给专业人配 Agent", "en": "BEFORE: AGENT FOR A PROFESSIONAL" },
+      "note": { "zh": "先定义人的岗位和专业流程，再用 Agent 提高个人效率。", "en": "Define the human role and workflow first, then add an agent to improve individual efficiency." }
+    },
+    "after": {
+      "label": { "zh": "未来：给 Agent 配合适的人", "en": "AFTER: HUMANS AROUND THE AGENT" },
+      "note": { "zh": "强大的 Marketing Agent 执行专业任务，人完成判断、关系与责任闭环。", "en": "A strong marketing agent executes specialist work while people close the loops of judgment, relationships, and accountability." }
+    }
+  },
+  "centerLabel": {
+    "zh": "组织中心从人的岗位，转向 Agent 无法独立完成的闭环",
+    "en": "THE CENTER SHIFTS FROM THE HUMAN ROLE TO THE LOOPS THE AGENT CANNOT CLOSE ALONE"
+  },
+  "stages": [
+    {
+      "id": "marketer",
+      "icon": "context",
+      "title": { "zh": "Marketing 专业人员", "en": "MARKETER" },
+      "items": [
+        { "zh": "定义岗位与流程", "en": "Role and workflow first" },
+        { "zh": "承担专业执行", "en": "Human executes" }
+      ]
+    },
+    {
+      "id": "assistant",
+      "icon": "agent",
+      "title": { "zh": "Marketing Agent", "en": "MARKETING AGENT" },
+      "items": [
+        { "zh": "搜索、生成、分析", "en": "Search, generate, analyze" },
+        { "zh": "提高个人效率", "en": "Improve efficiency" }
+      ]
+    },
+    {
+      "id": "strong-agent",
+      "icon": "agent",
+      "title": { "zh": "Marketing Agent", "en": "STRONG MARKETING AGENT" },
+      "items": [
+        { "zh": "持续分析与执行", "en": "Continuous execution" },
+        { "zh": "掌握专业流程", "en": "Own specialist workflow" }
+      ]
+    },
+    {
+      "id": "human-loop",
+      "icon": "select",
+      "title": { "zh": "人类闭环", "en": "HUMAN LOOP" },
+      "items": [
+        { "zh": "判断与品牌调性", "en": "Judgment and brand" },
+        { "zh": "KOL/KOC 与责任", "en": "Relationships and accountability" }
+      ]
+    }
+  ]
+}

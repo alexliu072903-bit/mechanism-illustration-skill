@@ -1,0 +1,34 @@
+{
+  "slug": "agent-adoption-path",
+  "layout": "pipeline",
+  "colors": { "core": "#73c6d4", "coreSoft": "#e8f7f8" },
+  "stages": [
+    {
+      "id": "professional",
+      "icon": "code",
+      "title": { "zh": "专业开发者", "en": "PROFESSIONAL" },
+      "items": [
+        { "zh": "进入生产流程", "en": "Enter production" },
+        { "zh": "Coding Agent", "en": "Coding agents" }
+      ]
+    },
+    {
+      "id": "prosumer",
+      "icon": "services",
+      "title": { "zh": "办公人群", "en": "PROSUMER" },
+      "items": [
+        { "zh": "价值可以衡量", "en": "Measurable value" },
+        { "zh": "办公 Agent", "en": "Office agents" }
+      ]
+    },
+    {
+      "id": "public",
+      "icon": "agent",
+      "title": { "zh": "大众用户", "en": "PUBLIC" },
+      "items": [
+        { "zh": "长期 Context", "en": "Long-term Context" },
+        { "zh": "Personal Agent", "en": "Personal agents" }
+      ]
+    }
+  ]
+}
