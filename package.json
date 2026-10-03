@@ -1,0 +1,11 @@
+{
+  "name": "mechanism-illustration-skill",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "render:examples": "node scripts/render-all.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

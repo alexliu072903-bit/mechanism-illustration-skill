@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mechanism Illustration"
+  short_description: "Turn documented workflows into consistent explanatory diagrams"
+  default_prompt: "Create a mechanism illustration from this documented workflow."
+policy:
+  allow_implicit_invocation: false

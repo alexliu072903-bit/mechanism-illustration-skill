@@ -1,0 +1,52 @@
+{
+  "slug": "resume-ai-mechanism",
+  "colors": { "core": "#9b8ee8", "coreSoft": "#eeebff" },
+  "stages": [
+    {
+      "id": "materials",
+      "icon": "document",
+      "title": { "zh": "准备材料", "en": "MATERIALS" },
+      "items": [
+        { "zh": "简历", "en": "Resume" },
+        { "zh": "岗位 JD", "en": "Job description" },
+        { "zh": "经历笔记", "en": "Experience notes" }
+      ]
+    },
+    {
+      "id": "choose",
+      "icon": "select",
+      "title": { "zh": "选择 CONTEXT", "en": "CHOOSE CONTEXT" },
+      "items": [
+        { "zh": "用户选择证据", "en": "User selects evidence" },
+        { "zh": "排除无关材料", "en": "Exclude irrelevant material" }
+      ]
+    },
+    {
+      "id": "rewrite",
+      "icon": "agent",
+      "title": { "zh": "依据改写", "en": "REWRITE" },
+      "items": [
+        { "zh": "只使用所选证据", "en": "Use selected evidence only" },
+        { "zh": "按 JD 重组表达", "en": "Rewrite for the role" }
+      ]
+    },
+    {
+      "id": "review",
+      "icon": "diff",
+      "title": { "zh": "审阅 DIFF", "en": "REVIEW DIFF" },
+      "items": [
+        { "zh": "查看改前改后", "en": "Compare before and after" },
+        { "zh": "用户继续修改", "en": "User keeps control" }
+      ]
+    },
+    {
+      "id": "export",
+      "icon": "export",
+      "title": { "zh": "导出文档", "en": "EXPORT" },
+      "items": [
+        { "zh": "中文或英文", "en": "Chinese or English" },
+        { "zh": "导出 Word", "en": "Export Word file" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "slug": "tg-miniapp-fastbuild-mechanism",
+  "colors": { "core": "#7cc9ef", "coreSoft": "#e8f6fd" },
+  "loop": {
+    "kind": "verified",
+    "label": { "zh": "逐步验证", "en": "VERIFY EACH STAGE" }
+  },
+  "stages": [
+    {
+      "id": "bot",
+      "icon": "bot",
+      "title": { "zh": "BOT 设置", "en": "BOT" },
+      "items": [
+        { "zh": "配置 Bot", "en": "Configure bot" },
+        { "zh": "设置 Mini App 菜单", "en": "Set Mini App menu" },
+        { "zh": "获取 Bot Token", "en": "Get bot token" }
+      ],
+      "warnings": [
+        { "zh": "Token 或菜单错误", "en": "Token or menu error" }
+      ]
+    },
+    {
+      "id": "code",
+      "icon": "code",
+      "title": { "zh": "代码", "en": "CODE" },
+      "items": [
+        { "zh": "连接源代码", "en": "Connect source code" },
+        { "zh": "选择分支", "en": "Select branch" },
+        { "zh": "配置构建", "en": "Configure build" }
+      ],
+      "warnings": [
+        { "zh": "仓库或分支错误", "en": "Repository or branch error" }
+      ]
+    },
+    {
+      "id": "services",
+      "icon": "services",
+      "title": { "zh": "三个服务", "en": "3 SERVICES" },
+      "items": [
+        { "zh": "前端", "en": "Frontend" },
+        { "zh": "后端", "en": "Backend" },
+        { "zh": "数据库", "en": "Database" }
+      ],
+      "warnings": [
+        { "zh": "构建或连接失败", "en": "Build or connection failed" }
+      ]
+    },
+    {
+      "id": "webhook",
+      "icon": "webhook",
+      "title": { "zh": "WEBHOOK", "en": "WEBHOOK" },
+      "items": [
+        { "zh": "注册 Webhook", "en": "Register webhook" },
+        { "zh": "填写正确 URL", "en": "Use the correct URL" },
+        { "zh": "检查路径", "en": "Check the path" }
+      ],
+      "warnings": [
+        { "zh": "URL 无法访问", "en": "URL not reachable" }
+      ]
+    },
+    {
+      "id": "public",
+      "icon": "phone",
+      "title": { "zh": "公开链接", "en": "PUBLIC LINK" },
+      "items": [
+        { "zh": "打开分享链接", "en": "Open share link" },
+        { "zh": "在手机上测试", "en": "Test on mobile" },
+        { "zh": "确认 Mini App 加载", "en": "Confirm Mini App loads" }
+      ],
+      "warnings": [
+        { "zh": "域名或 CORS 错误", "en": "Domain or CORS error" }
+      ]
+    }
+  ]
+}
